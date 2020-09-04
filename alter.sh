@@ -1,23 +1,24 @@
-for M in {01..12}
+year = 2018
+for month in {01..12}
+do
+  mkdir $month
+  cd $month
+  for day in {01..31}
   do
-    mkdir $M
-    cd $M
-    for D in {01..31}
-    do
-      mkdir $D
-      cd $D
-      number=$((RANDOM % 12))
-	for ((i=1; i <= number; i++)); do
-        echo "$i on $M/$D/2018" > commit.md
-        export GIT_COMMITTER_DATE="2018-$M-$D 12:$i:00"
-        export GIT_AUTHOR_DATE="2018-$M-$D 12:$i:00"
-        git add commit.md -f
-        git commit --date="2018-$M-$D 12:0$i:00" -m "$i on $M $D 2018"
-      done
-      cd ../
+    mkdir $day
+    cd $day
+    randomHours=$((RANDOM % 12))
+    for ((hour=1; hour <= randomHours; hour++)); do
+      echo "$hour on $month/$day/$year" > commit.md
+      export GIT_COMMITTER_DATE="$year-$month-$day $hour:00:00"
+      export GIT_AUTHOR_DATE="$year-$month-$day $hour:00:00"
+      git add commit.md -f
+      git commit --date="$year-$month-$day 0$hour:00:00" -m "$hour on $month $day $year"
     done
     cd ../
   done
+  cd ../
+done
 git push origin master
 git rm -rf 0*
 git rm -rf 1*
